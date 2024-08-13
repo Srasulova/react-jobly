@@ -1,0 +1,4 @@
+# .gitignore in the main directory
+**/node_modules/
+backend/config.js
+backend/config.test.js
