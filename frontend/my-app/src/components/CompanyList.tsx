@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import CompanyCard from './CompanyCard';
-import JoblyApi from '../api';
+import JoblyApi from '../../../../api';
 
 export interface Company {
     handle: string;
