@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import CompanyCard from './CompanyCard';
-import JoblyApi from "../../../../api"
+import JoblyApi from "../../../../api";
+import SearchInput from './SearchInput';
 import './CompanyList.css';
 
 export interface Company {
@@ -35,18 +36,17 @@ function CompanyList() {
         fetchCompanies();
     }, [search]);
 
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearch(event.target.value);
+    const handleSearchChange = (value: string) => {
+        setSearch(value);
     };
 
     return (
         <div className="company-list-container">
             <h1>Companies</h1>
-            <input
-                type="text"
+            <SearchInput
+                search={search}
+                onSearchChange={handleSearchChange}
                 placeholder="Search companies..."
-                value={search}
-                onChange={handleSearchChange}
             />
             {loading ? ( // Display loading message if loading state is true
                 <p>Loading companies...</p>
