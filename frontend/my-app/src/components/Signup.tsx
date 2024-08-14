@@ -9,8 +9,8 @@ interface SignupFormProps {
 const initialUserData = {
     username: '',
     password: '',
-    first_name: '',
-    last_name: '',
+    firstName: '',
+    lastName: '',
     email: ''
 };
 
@@ -27,58 +27,74 @@ const Signup: React.FC<SignupFormProps> = ({ signup }) => {
         }));
     };
 
-    // Handle form submission
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        signup(userData);
+        signup({
+            username: userData.username,
+            password: userData.password,
+            first_name: userData.firstName,  // Updated to match backend expectation
+            last_name: userData.lastName,    // Updated to match backend expectation
+            email: userData.email
+        });
     };
 
     return (
         <form onSubmit={handleSubmit} className="signup-form">
             <h2>Signup</h2>
-            <label>
+            <label htmlFor="username">
                 Username:
                 <input
+                    id="username"
                     type="text"
                     name="username"
                     value={userData.username}
                     onChange={handleChange}
+                    required
                 />
             </label>
-            <label>
+            <label htmlFor="password">
                 Password:
                 <input
+                    id="password"
                     type="password"
                     name="password"
                     value={userData.password}
                     onChange={handleChange}
+                    minLength={6}
+                    required
                 />
             </label>
-            <label>
+            <label htmlFor="firstName">
                 First Name:
                 <input
+                    id="firstName"
                     type="text"
-                    name="first_name"
-                    value={userData.first_name}
+                    name="firstName"
+                    value={userData.firstName}
                     onChange={handleChange}
+                    required
                 />
             </label>
-            <label>
+            <label htmlFor="lastName">
                 Last Name:
                 <input
+                    id="lastName"
                     type="text"
-                    name="last_name"
-                    value={userData.last_name}
+                    name="lastName"
+                    value={userData.lastName}
                     onChange={handleChange}
+                    required
                 />
             </label>
-            <label>
+            <label htmlFor="email">
                 Email:
                 <input
+                    id="email"
                     type="email"
                     name="email"
                     value={userData.email}
                     onChange={handleChange}
+                    required
                 />
             </label>
             <button type="submit">Signup</button>
