@@ -20,7 +20,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
 
     return (
         <div className="job-card">
-            <h3>{job.title}</h3>
+            <h3 style={{ textAlign: "center" }}>{job.title}</h3>
             <p>Salary: ${job.salary}</p>
             <p>Equity: {job.equity}</p>
             <button onClick={handleApply} disabled={applied}>

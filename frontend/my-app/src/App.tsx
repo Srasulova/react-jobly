@@ -5,7 +5,6 @@ import Homepage from './components/Homepage';
 import CompaniesList from './components/CompanyList';
 import CompanyDetail from './components/CompanyDetail';
 import JobList from './components/JobList';
-// import CompanyJobs from './components/CompanyJobs';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Profile from './components/Profile';

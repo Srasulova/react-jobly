@@ -44,9 +44,9 @@ const CompanyDetail: React.FC = () => {
 
     return (
         <div className="company-detail">
-            <h1>{company.name}</h1>
-            <p>{company.description}</p>
-            <CompanyJobs jobs={company.jobs || []} /> {/* Updated to CompanyJobs */}
+            <h1 style={{ textAlign: "center" }}>{company.name}</h1>
+            <p style={{ textAlign: "center" }}>{company.description}</p>
+            <CompanyJobs jobs={company.jobs || []} />
         </div>
     );
 };
