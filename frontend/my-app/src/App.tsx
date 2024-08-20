@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode'; // for decoding JWT tokens
 import NavBar from './components/NavBar';
@@ -12,10 +12,11 @@ import Profile from './components/Profile';
 import JoblyApi from '../../../api';
 import { UserContext } from '../src/hooks/useUserContext';
 import { User, DecodedToken } from '../src/types'; // Import shared types
+import useLocalStorage from './hooks/useLocalStorage';
 
 function App() {
-  const [token, setToken] = useState<string | null>(null);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [token, setToken] = useLocalStorage<string | null>('jobly-token', null)
+  const [currentUser, setCurrentUser] = useLocalStorage<User | null>('jobly-user', null);
 
   // Function to handle login
   const login = async (userData: { username: string; password: string }) => {
@@ -44,26 +45,39 @@ function App() {
     JoblyApi.token = '';
     setToken(null);
     setCurrentUser(null);
+    window.localStorage.removeItem('jobly-token')
+    window.localStorage.removeItem('jobly-user');
   };
 
-  // Effect to load user data when token changes
+
+  const fetchUser = useCallback(async (username: string) => {
+    console.log('Calling fetchUser for:', username);
+    try {
+      const user = await JoblyApi.getUser(username);
+      console.log('User fetched:', user);
+      setCurrentUser(user);
+    } catch (error) {
+      console.error('Failed to fetch user:', error);
+    }
+  }, [setCurrentUser]);
+
+
   useEffect(() => {
     if (token) {
+      console.log('Token changed:', token);
+      JoblyApi.token = token;
       const decodedToken: DecodedToken = jwtDecode(token);
       const username = decodedToken.username;
-
-      const fetchUser = async () => {
-        try {
-          const user = await JoblyApi.getUser(username);
-          setCurrentUser(user);
-        } catch (error) {
-          console.error('Failed to fetch user:', error);
-        }
-      };
-
-      fetchUser();
+      fetchUser(username);
+    } else {
+      console.log('No token found, clearing user data.');
+      setCurrentUser(null);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
+
+
+
 
   return (
     <UserContext.Provider value={{ currentUser, setCurrentUser }}>
