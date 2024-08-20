@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useUserContext } from '../hooks/useUserContext';
 import JoblyApi from "../../../../api";
+import './Profile.css'; // Import the CSS file
 
 const Profile: React.FC = () => {
     const { currentUser, setCurrentUser } = useUserContext();
@@ -39,7 +40,7 @@ const Profile: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className="profile-container">
             <h2>Profile</h2>
             {editing ? (
                 <form onSubmit={handleSubmit}>
@@ -80,8 +81,8 @@ const Profile: React.FC = () => {
                             onChange={handleChange}
                         />
                     </label>
-                    <button type="submit">Save</button>
-                    <button type="button" onClick={() => setEditing(false)}>Cancel</button>
+                    <button type="submit" className='submit-btn'>Save</button>
+                    <button type="button" className='cancel-btn' onClick={() => setEditing(false)}>Cancel</button>
                 </form>
             ) : (
                 <div>
@@ -89,7 +90,7 @@ const Profile: React.FC = () => {
                     <p><strong>First Name:</strong> {currentUser.firstName}</p>
                     <p><strong>Last Name:</strong> {currentUser.lastName}</p>
                     <p><strong>Email:</strong> {currentUser.email}</p>
-                    <p><strong>Admin:</strong> {currentUser.is_admin ? 'Yes' : 'No'}</p>
+                    <p><strong className="admin-status">Admin:</strong> {currentUser.is_admin ? 'Yes' : 'No'}</p>
                     <button onClick={() => setEditing(true)}>Edit Profile</button>
                 </div>
             )}
