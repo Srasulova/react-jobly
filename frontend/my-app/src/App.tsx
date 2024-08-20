@@ -99,7 +99,7 @@ function App() {
       <Router>
         <NavBar logout={logout} />
         <Routes>
-          <Route path="/" element={<Homepage userName={currentUser?.username} />} />
+          <Route path="/" element={<Homepage firstName={currentUser?.firstName} />} />
           <Route path="/login" element={<Login login={login} />} />
           <Route path="/signup" element={<Signup signup={signup} />} />
           <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
