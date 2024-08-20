@@ -13,6 +13,8 @@ import JoblyApi from '../../../api';
 import { UserContext } from '../src/hooks/useUserContext';
 import { User, DecodedToken } from '../src/types'; // Import shared types
 import useLocalStorage from './hooks/useLocalStorage';
+import ProtectedRoute from './components/ProtectedRoute';
+
 
 function App() {
   const [token, setToken] = useLocalStorage<string | null>('jobly-token', null)
@@ -24,6 +26,11 @@ function App() {
       const token = await JoblyApi.loginUser(userData);
       JoblyApi.token = token;
       setToken(token);
+
+      // Fetch the user immediately after setting the token
+      const decodedToken: DecodedToken = jwtDecode(token);
+      const username = decodedToken.username;
+      await fetchUser(username);
     } catch (error) {
       console.error('Login failed:', error);
     }
@@ -35,10 +42,16 @@ function App() {
       const token = await JoblyApi.registerUser(userData);
       JoblyApi.token = token;
       setToken(token);
+
+      // Fetch the user immediately after setting the token
+      const decodedToken: DecodedToken = jwtDecode(token);
+      const username = decodedToken.username;
+      await fetchUser(username); // Ensure fetchUser completes
     } catch (error) {
       console.error('Signup failed:', error);
     }
   };
+
 
   // Function to handle logout
   const logout = () => {
@@ -58,11 +71,13 @@ function App() {
       setCurrentUser(user);
     } catch (error) {
       console.error('Failed to fetch user:', error);
+      setCurrentUser(null); // Clear user if fetching fails
     }
   }, [setCurrentUser]);
 
 
   useEffect(() => {
+    console.log('Token in useEffect:', token);
     if (token) {
       console.log('Token changed:', token);
       JoblyApi.token = token;
@@ -84,13 +99,13 @@ function App() {
       <Router>
         <NavBar logout={logout} />
         <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/companies" element={<CompaniesList />} />
-          <Route path="/companies/:handle" element={<CompanyDetail />} />
-          <Route path="/jobs" element={<JobList />} />
+          <Route path="/" element={<Homepage userName={currentUser?.username} />} />
           <Route path="/login" element={<Login login={login} />} />
           <Route path="/signup" element={<Signup signup={signup} />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
+          <Route path="/jobs" element={<ProtectedRoute element={<JobList />} />} />
+          <Route path="/companies" element={<ProtectedRoute element={<CompaniesList />} />} />
+          <Route path="/companies/:handle" element={<ProtectedRoute element={<CompanyDetail />} />} />
         </Routes>
       </Router>
     </UserContext.Provider>

@@ -11,14 +11,15 @@ const Login: React.FC<LoginFormProps> = ({ login }) => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        login({ username, password }).then(() => {
-            navigate('/jobs');
-        })
-            .catch(err => {
-                console.error('Login failed:', err);
-            });
+
+        try {
+            await login({ username, password })
+            navigate('/');
+        } catch (err) {
+            console.error('Login failed:', err);
+        }
     };
 
     return (

@@ -29,22 +29,22 @@ const Signup: React.FC<SignupFormProps> = ({ signup }) => {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        signup({
-            username: userData.username,
-            password: userData.password,
-            firstName: userData.firstName,  // Use camelCase for the key names
-            lastName: userData.lastName,
-            email: userData.email
-        })
-            .then(() => {
-                navigate('/jobs');
+        try {
+            await signup({
+                username: userData.username,
+                password: userData.password,
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                email: userData.email
             })
-            .catch(err => {
-                console.error('Signup failed:', err);
-            });
+            // After signup, navigate to /jobs
+            navigate('/');
+        } catch (err) {
+            console.error('Signup failed:', err);
+        }
     };
 
     return (
