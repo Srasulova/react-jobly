@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
 interface LoginFormProps {
-    login: (userData: { username: string; password: string }) => void;
+    login: (userData: { username: string; password: string }) => Promise<void>;
 }
 
 const Login: React.FC<LoginFormProps> = ({ login }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        login({ username, password });
+        login({ username, password }).then(() => {
+            navigate('/jobs');
+        })
+            .catch(err => {
+                console.error('Login failed:', err);
+            });
     };
 
     return (

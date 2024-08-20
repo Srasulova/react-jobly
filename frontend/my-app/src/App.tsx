@@ -10,7 +10,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Profile from './components/Profile';
 import JoblyApi from '../../../api';
-import { UserContext } from '../src/hooks/useUserContext'; // Adjust the path if needed
+import { UserContext } from '../src/hooks/useUserContext';
 import { User, DecodedToken } from '../src/types'; // Import shared types
 
 function App() {
@@ -29,7 +29,7 @@ function App() {
   };
 
   // Function to handle signup
-  const signup = async (userData: { username: string; password: string; first_name: string; last_name: string; email: string }) => {
+  const signup = async (userData: { username: string; password: string; firstName: string; lastName: string; email: string }) => {
     try {
       const token = await JoblyApi.registerUser(userData);
       JoblyApi.token = token;

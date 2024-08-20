@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Signup.css';
 
 interface SignupFormProps {
-    signup: (userData: { username: string; password: string; first_name: string; last_name: string; email: string }) => void;
+    signup: (userData: { username: string; password: string; firstName: string; lastName: string; email: string }) => Promise<void>;
 }
 
 // Define the initial state shape
@@ -17,6 +18,7 @@ const initialUserData = {
 const Signup: React.FC<SignupFormProps> = ({ signup }) => {
     // Use a single state object for userData
     const [userData, setUserData] = useState(initialUserData);
+    const navigate = useNavigate();
 
     // Handle form changes
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,13 +31,20 @@ const Signup: React.FC<SignupFormProps> = ({ signup }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
         signup({
             username: userData.username,
             password: userData.password,
-            first_name: userData.firstName,  // Updated to match backend expectation
-            last_name: userData.lastName,    // Updated to match backend expectation
+            firstName: userData.firstName,  // Use camelCase for the key names
+            lastName: userData.lastName,
             email: userData.email
-        });
+        })
+            .then(() => {
+                navigate('/jobs');
+            })
+            .catch(err => {
+                console.error('Signup failed:', err);
+            });
     };
 
     return (

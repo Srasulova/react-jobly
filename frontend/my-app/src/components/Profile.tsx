@@ -12,8 +12,8 @@ const Profile: React.FC = () => {
         <div>
             <h2>Profile</h2>
             <p><strong>Username:</strong> {currentUser.username}</p>
-            <p><strong>First Name:</strong> {currentUser.first_name}</p>
-            <p><strong>Last Name:</strong> {currentUser.last_name}</p>
+            <p><strong>First Name:</strong> {currentUser.firstName}</p>
+            <p><strong>Last Name:</strong> {currentUser.lastName}</p>
             <p><strong>Email:</strong> {currentUser.email}</p>
             <p><strong>Admin:</strong> {currentUser.is_admin ? 'Yes' : 'No'}</p>
         </div>
