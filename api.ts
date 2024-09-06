@@ -199,6 +199,16 @@ class JoblyApi {
     );
     return res.applied;
   }
+
+  /** Get the list of jobs a user has applied to. */
+  static async getAppliedJobs(username: string): Promise<number[]> {
+    const res = await this.request<ApiResponse<number[]>>(
+      `users/${username}/jobs`,
+      {},
+      "get"
+    );
+    return res.jobs;
+  }
 }
 
 // Temporary token for development
